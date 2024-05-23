@@ -1,14 +1,24 @@
 package at.fhv.sysarch.lab3.pipeline;
 
 import at.fhv.sysarch.lab3.animation.AnimationRenderer;
+import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.obj.Model;
+import at.fhv.sysarch.lab3.pipeline.pull.PullModelViewTransformationFilter;
+import at.fhv.sysarch.lab3.pipeline.pull.PullPipe;
+import at.fhv.sysarch.lab3.pipeline.pull.PullSource;
+import com.hackoeur.jglm.Mat4;
+import com.hackoeur.jglm.Matrices;
 import javafx.animation.AnimationTimer;
 
 public class PullPipelineFactory {
     public static AnimationTimer createPipeline(PipelineData pd) {
         // TODO: pull from the source (model)
+        PullSource pullSource = new PullSource();
+        PullPipe<Face> pipeToModelViewTransformationFilter = new PullPipe<>(pullSource);
 
         // TODO 1. perform model-view transformation from model to VIEW SPACE coordinates
+        PullModelViewTransformationFilter<Face> pullModelViewTransformationFilter = new PullModelViewTransformationFilter<>(pipeToModelViewTransformationFilter, pd);
+        PullPipe<Face> pipeToBackfaceCullingFilter = new PullPipe<>(pullModelViewTransformationFilter);
 
         // TODO 2. perform backface culling in VIEW SPACE
 
@@ -33,6 +43,7 @@ public class PullPipelineFactory {
         // viewport and computation of the praction
         return new AnimationRenderer(pd) {
             // TODO rotation variable goes in here
+            float rotation = 0;
 
             /** This method is called for every frame from the JavaFX Animation
              * system (using an AnimationTimer, see AnimationRenderer). 
@@ -42,12 +53,16 @@ public class PullPipelineFactory {
             @Override
             protected void render(float fraction, Model model) {
                 // TODO compute rotation in radians
+                rotation += fraction * 2 * Math.PI / 10;
 
                 // TODO create new model rotation matrix using pd.getModelRotAxis and Matrices.rotate
+                Mat4 rotationMatrix = Matrices.rotate(rotation, pd.getModelRotAxis());
 
                 // TODO compute updated model-view tranformation
+                pullModelViewTransformationFilter.setRotationMatrix(rotationMatrix);
 
                 // TODO update model-view filter
+                pullSource.setFaces(model.getFaces());
 
                 // TODO trigger rendering of the pipeline
             }
