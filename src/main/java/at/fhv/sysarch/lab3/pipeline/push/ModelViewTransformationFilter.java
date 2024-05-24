@@ -3,17 +3,15 @@ package at.fhv.sysarch.lab3.pipeline.push;
 import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import com.hackoeur.jglm.Mat4;
-import com.hackoeur.jglm.Matrices;
 
-public class ModelViewTransformationPushFilter implements IPushFilter<Face, Face> {
+public class ModelViewTransformationFilter implements IPushFilter<Face, Face> {
 
     private IPushPipe<Face> successor;
     private final PipelineData pd;
-    private final Mat4 rotationMatrix;
+    private Mat4 rotationMatrix;
 
-    public ModelViewTransformationPushFilter(PipelineData pd) {
+    public ModelViewTransformationFilter(PipelineData pd) {
         this.pd = pd;
-        this.rotationMatrix = Matrices.rotate(5f, pd.getModelRotAxis());
     }
 
     @Override
@@ -46,5 +44,9 @@ public class ModelViewTransformationPushFilter implements IPushFilter<Face, Face
                 transformationMatrix.multiply(face.getN2()),
                 transformationMatrix.multiply(face.getN3())
         );
+    }
+
+    public void setRotationMatrix(Mat4 rotationMatrix) {
+        this.rotationMatrix = rotationMatrix;
     }
 }

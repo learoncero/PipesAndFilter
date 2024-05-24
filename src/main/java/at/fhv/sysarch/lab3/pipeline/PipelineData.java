@@ -15,24 +15,24 @@ import javafx.scene.paint.Color;
 
 public class PipelineData {
     public static class Builder {
-        private Canvas c;
-        private Model m;
-        private int viewWidth;
-        private int viewHeight;
+        private final Canvas c;
+        private final Model m;
+        private final int viewWidth;
+        private final int viewHeight;
 
         // optional
         private RenderingMode rm;
         private boolean performLighting;
 
-        private Vec3 lightPos;
+        private final Vec3 lightPos;
 
-        private Vec3 modelPos;
-        private Vec3 modelRotAxis;
+        private final Vec3 modelPos;
+        private final Vec3 modelRotAxis;
         private Color modelColor;
 
-        private Vec3 viewingCenter;
-        private Vec3 viewingUp;
-        private Vec3 viewingEye;
+        private final Vec3 viewingCenter;
+        private final Vec3 viewingUp;
+        private final Vec3 viewingEye;
 
         public Builder(Canvas c, Model m, int width, int height) {
             Objects.requireNonNull(c);
@@ -89,45 +89,45 @@ public class PipelineData {
     }
 
     // the GraphicsContext where to render
-    private GraphicsContext graphicsContext;
+    private final GraphicsContext graphicsContext;
     // the mode which to render
-    private Model model;
+    private final Model model;
 
     // lightpos in VIEW SPACE!
-    private Vec3 lightPos;
+    private final Vec3 lightPos;
     // indicates if the pipline should perform lighting
-    private boolean performLighting;
+    private final boolean performLighting;
 
     // the model position in WORLD space (for this example its 0/0/0 in all cases)
-    private Vec3 modelPos;
+    private final Vec3 modelPos;
     // the model rotation axis (for this example its 0/1/0 in call cases)
-    private Vec3 modelRotAxis;
+    private final Vec3 modelRotAxis;
     // the model color
-    private Color modelColor;
+    private final Color modelColor;
 
     // the point at which the camera is looking at
-    private Vec3 viewingCenter;
+    private final Vec3 viewingCenter;
     // the up vector of the camera
-    private Vec3 viewingUp;
+    private final Vec3 viewingUp;
     // the position of the camera in WORLD space
-    private Vec3 viewingEye;
+    private final Vec3 viewingEye;
 
     // the viewport width 
-    private int viewWidth;
+    private final int viewWidth;
     // the viewport height
-    private int viewHeight;
+    private final int viewHeight;
 
     // the initial model translation to the modelPos (see above)
-    private Mat4 modelTranslation;
+    private final Mat4 modelTranslation;
     // the viewing transformation
-    private Mat4 viewTransform;
+    private final Mat4 viewTransform;
     // the projection transformation
-    private Mat4 projTransform;
+    private final Mat4 projTransform;
     // the viewport transformation
-    private Mat4 viewportTransform;
+    private final Mat4 viewportTransform;
 
     // the rendering mode
-    private RenderingMode renderingMode;
+    private final RenderingMode renderingMode;
 
     private PipelineData(Builder builder) {
 
@@ -151,7 +151,7 @@ public class PipelineData {
       this.viewWidth  = builder.viewWidth;
       this.viewHeight = builder.viewHeight;
 
-      float ratio     = viewWidth / viewHeight; // ratio
+      float ratio     = (float) viewWidth / viewHeight; // ratio
       float fov       = 90.0f; // field of view in angles
       float nearPlane = 0.1f; // near clipping plane, > 0
       float farPlane  = 100.0f; // far clipping plane

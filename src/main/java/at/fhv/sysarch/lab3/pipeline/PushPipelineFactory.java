@@ -4,6 +4,8 @@ import at.fhv.sysarch.lab3.animation.AnimationRenderer;
 import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.obj.Model;
 import at.fhv.sysarch.lab3.pipeline.push.*;
+import com.hackoeur.jglm.Mat4;
+import com.hackoeur.jglm.Matrices;
 import javafx.animation.AnimationTimer;
 
 
@@ -13,22 +15,16 @@ public class PushPipelineFactory {
         Source source = new Source();
 
         // TODO 1. perform model-view transformation from model to VIEW SPACE coordinates
-        ModelViewTransformationPushFilter modelViewTransformationFilter = new ModelViewTransformationPushFilter(pd);
+        ModelViewTransformationFilter modelViewTransformationFilter = new ModelViewTransformationFilter(pd);
         Pipe<Face> toModelViewTransformationPipe = new Pipe<>();
         source.setPipeSuccessor(toModelViewTransformationPipe);
         toModelViewTransformationPipe.setFilterSuccessor(modelViewTransformationFilter);
 
-        Pipe<Face> toResizeFilter = new Pipe<>();
-        ResizePushFilter resizeFilter = new ResizePushFilter();
-        modelViewTransformationFilter.setPipeSuccessor(toResizeFilter);
-        toResizeFilter.setFilterSuccessor(resizeFilter);
-
-        Pipe<Face> toRenderer = new Pipe<>();
-        Renderer renderer = new Renderer(pd.getGraphicsContext(), pd.getRenderingMode(), pd.getModelColor());
-        resizeFilter.setPipeSuccessor(toRenderer);
-        toRenderer.setFilterSuccessor(renderer);
-
         // TODO 2. perform backface culling in VIEW SPACE
+        BackfaceCullingFilter backfaceCullingFilter = new BackfaceCullingFilter();
+        Pipe<Face> toBackfaceCullingPipe = new Pipe<>();
+        modelViewTransformationFilter.setPipeSuccessor(toBackfaceCullingPipe);
+        toBackfaceCullingPipe.setFilterSuccessor(backfaceCullingFilter);
 
         // TODO 3. perform depth sorting in VIEW SPACE
 
@@ -46,14 +42,21 @@ public class PushPipelineFactory {
         // TODO 6. perform perspective division to screen coordinates
 
         // TODO 7. feed into the sink (renderer)
+        Pipe<Face> toResizeFilter = new Pipe<>();
+        PushFilter resizeFilter = new PushFilter();
+        backfaceCullingFilter.setPipeSuccessor(toResizeFilter);
+        toResizeFilter.setFilterSuccessor(resizeFilter);
+
+        Pipe<Face> toRenderer = new Pipe<>();
+        Renderer renderer = new Renderer(pd.getGraphicsContext(), pd.getRenderingMode(), pd.getModelColor());
+        resizeFilter.setPipeSuccessor(toRenderer);
+        toRenderer.setFilterSuccessor(renderer);
 
         // returning an animation renderer which handles clearing of the
         // viewport and computation of the praction
         return new AnimationRenderer(pd) {
             // TODO rotation variable goes in here
-            // int pos = (int)Math.random() * 350;
-            private int pos = (int)(Math.random()*350);
-            //private int pos = 0;
+            float rotation = 0f;
 
             /** This method is called for every frame from the JavaFX Animation
              * system (using an AnimationTimer, see AnimationRenderer). 
@@ -62,23 +65,16 @@ public class PushPipelineFactory {
              */
             @Override
             protected void render(float fraction, Model model) {
-                /*model.getFaces().forEach(face -> {
-                    pd.getGraphicsContext().strokeLine(face.getV1().getX()*100, face.getV1().getY()*100, face.getV2().getX()*100, face.getV2().getY()*100);
-                    pd.getGraphicsContext().strokeLine(face.getV2().getX()*100, face.getV2().getY()*100, face.getV3().getX()*100, face.getV3().getY()*100);
-                    pd.getGraphicsContext().strokeLine(face.getV1().getX()*100, face.getV1().getY()*100, face.getV3().getX()*100, face.getV3().getY()*100);
-                });*/
-
-                source.write(model);
                 // TODO compute rotation in radians
+                rotation += fraction;
+                double radiant = rotation % (2 * Math.PI);
 
                 // TODO create new model rotation matrix using pd.modelRotAxis
-
-                // TODO compute updated model-view tranformation
-
-                // TODO update model-view filter
+                Mat4 rotationMatrix = Matrices.rotate((float) radiant, pd.getModelRotAxis());
+                modelViewTransformationFilter.setRotationMatrix(rotationMatrix);
 
                 // TODO trigger rendering of the pipeline
-
+                source.write(model);
             }
         };
     }

@@ -2,7 +2,7 @@ package at.fhv.sysarch.lab3.pipeline.push;
 
 import at.fhv.sysarch.lab3.obj.Face;
 
-public class ResizePushFilter implements IPushFilter<Face, Face> {
+public class PushFilter implements IPushFilter<Face, Face> {
 
     private IPushPipe<Face> successor;
 
