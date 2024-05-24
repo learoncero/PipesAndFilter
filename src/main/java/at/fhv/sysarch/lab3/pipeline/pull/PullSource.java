@@ -15,7 +15,7 @@ public class PullSource extends Pull<Face, Face> {
     }
 
     public Face pull() {
-        return !hasNext() ? null : faces.remove(faces.size() - 1);
+        return !hasNext() ? null : faces.remove(0);
     }
 
     public void setFaces(List<Face> faces) {
