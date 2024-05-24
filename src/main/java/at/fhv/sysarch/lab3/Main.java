@@ -55,6 +55,7 @@ public class Main extends Application {
         om.ifPresent(m -> {
             PipelineData pd1 = new PipelineData.Builder(c1, m, VIEW_WIDTH, VIEW_HEIGHT)
                                     .setModelColor(Color.ORANGE)
+                                    .setRenderingMode(RenderingMode.POINT)
                                     .build();
 
             PipelineData pd2 = new PipelineData.Builder(c2, m, VIEW_WIDTH, VIEW_HEIGHT)
