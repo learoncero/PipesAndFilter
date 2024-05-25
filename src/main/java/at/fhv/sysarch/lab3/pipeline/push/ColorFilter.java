@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 public class ColorFilter implements IPushFilter<Face, Pair<Face, Color>> {
     private IPushPipe<Pair<Face, Color>> successor;
-    private PipelineData pd;
+    private final PipelineData pd;
 
     public ColorFilter(PipelineData pd) {
         this.pd = pd;

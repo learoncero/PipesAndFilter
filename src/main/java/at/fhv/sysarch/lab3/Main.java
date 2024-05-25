@@ -20,8 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private final static int VIEW_WIDTH  = 860;
-    private final static int VIEW_HEIGHT = 540;
+    private final static int VIEW_WIDTH  = 573;
+    private final static int VIEW_HEIGHT = 360;
 
     private final static int SCENE_WIDTH  = VIEW_WIDTH * 2;
     private final static int SCENE_HEIGHT = VIEW_HEIGHT * 2;
@@ -48,14 +48,15 @@ public class Main extends Application {
         grid.add(c4, 1, 1);
 
         root.getChildren().add(grid);
+
         stage.setScene(s);
         stage.setTitle("Simple CG Pipeline");
+        stage.setFullScreen(false);  // Ensure it's not full screen
         stage.show();
 
         om.ifPresent(m -> {
             PipelineData pd1 = new PipelineData.Builder(c1, m, VIEW_WIDTH, VIEW_HEIGHT)
                                     .setModelColor(Color.ORANGE)
-                                    .setRenderingMode(RenderingMode.POINT)
                                     .build();
 
             PipelineData pd2 = new PipelineData.Builder(c2, m, VIEW_WIDTH, VIEW_HEIGHT)
