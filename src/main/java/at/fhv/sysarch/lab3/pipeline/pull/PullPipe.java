@@ -1,13 +1,21 @@
 package at.fhv.sysarch.lab3.pipeline.pull;
 
-public class PullPipe<I> extends Pull<I, I> {
+public class PullPipe<I> implements IPullPipe<I> {
 
-    public PullPipe(IPull<I> predecessor) {
-        super(predecessor);
+    private IPullFilter<?, I> predecessor;
+
+    @Override
+    public void setFilterPredecessor(IPullFilter<?, I> filterPredecessor) {
+        this.predecessor = filterPredecessor;
     }
 
     @Override
-    public I pull() {
-        return predecessor.pull();
+    public I read() {
+        return this.predecessor.read();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return predecessor.hasNext();
     }
 }

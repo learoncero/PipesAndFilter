@@ -19,18 +19,18 @@ public class LightingFilter implements IPushFilter<Pair<Face, Color>, Pair<Face,
     }
 
     @Override
-    public void write(Pair<Face, Color> input) {
-        Pair<Face, Color> pair = process(input);
+    public void write(Pair<Face, Color> data) {
+        Pair<Face, Color> pair = process(data);
         this.successor.write(pair);
     }
 
     @Override
-    public Pair<Face, Color> process(Pair<Face, Color> input) {
+    public Pair<Face, Color> process(Pair<Face, Color> data) {
         if (!pd.isPerformLighting()) {
-            return input;
+            return data;
         } else {
-            Face face = input.fst();
-            Color color = input.snd();
+            Face face = data.fst();
+            Color color = data.snd();
 
             float dotProduct = face.getN1().toVec3().dot(pd.getLightPos().getUnitVector());
             return new Pair<>(face, color.deriveColor(0, 1, dotProduct, 1));

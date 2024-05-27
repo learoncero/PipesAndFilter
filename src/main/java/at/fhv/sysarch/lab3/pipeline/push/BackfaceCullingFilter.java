@@ -11,23 +11,23 @@ public class BackfaceCullingFilter implements IPushFilter<Face, Face> {
     }
 
     @Override
-    public void write(Face input) {
-        Face face = process(input);
+    public void write(Face data) {
+        Face face = process(data);
         if (face != null) {
             successor.write(face);
         }
     }
 
     @Override
-    public Face process(Face input) {
-        float v1DotProduct = input.getV1().dot(input.getN1());
-        float v2DotProduct = input.getV2().dot(input.getN2());
-        float v3DotProduct = input.getV3().dot(input.getN3());
+    public Face process(Face data) {
+        float v1DotProduct = data.getV1().dot(data.getN1());
+        float v2DotProduct = data.getV2().dot(data.getN2());
+        float v3DotProduct = data.getV3().dot(data.getN3());
 
         if (v1DotProduct > 0 || v2DotProduct > 0 || v3DotProduct > 0) {
             return null;
         } else {
-            return input;
+            return data;
         }
     }
 }

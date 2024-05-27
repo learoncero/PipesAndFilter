@@ -21,14 +21,14 @@ public class ProjectionTransformationFilter implements IPushFilter<Pair<Face, Co
     }
 
     @Override
-    public void write(Pair<Face, Color> input) {
-        Pair<Face, Color> pair = process(input);
+    public void write(Pair<Face, Color> data) {
+        Pair<Face, Color> pair = process(data);
         this.successor.write(pair);
     }
 
     @Override
-    public Pair<Face, Color> process(Pair<Face, Color> input) {
-        Face face = input.fst();
+    public Pair<Face, Color> process(Pair<Face, Color> data) {
+        Face face = data.fst();
         Mat4 projTransform = pd.getProjTransform();
 
         Face projectedFace = new Face(
@@ -38,6 +38,6 @@ public class ProjectionTransformationFilter implements IPushFilter<Pair<Face, Co
                 face
         );
 
-        return new Pair<>(projectedFace, input.snd());
+        return new Pair<>(projectedFace, data.snd());
     }
 }

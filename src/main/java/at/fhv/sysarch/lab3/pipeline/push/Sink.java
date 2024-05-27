@@ -25,14 +25,14 @@ public class Sink implements IPushFilter<Pair<Face, Color>, Pair<Face, Color>> {
     }
 
     @Override
-    public void write(Pair<Face, Color> input) {
-        process(input);
+    public void write(Pair<Face, Color> data) {
+        process(data);
     }
 
     @Override
-    public Pair<Face, Color> process(Pair<Face, Color> input) {
-        Face face = input.fst();
-        Color color = input.snd();
+    public Pair<Face, Color> process(Pair<Face, Color> data) {
+        Face face = data.fst();
+        Color color = data.snd();
 
         gpc.setStroke(color);
         gpc.setFill(color);
@@ -46,7 +46,7 @@ public class Sink implements IPushFilter<Pair<Face, Color>, Pair<Face, Color>> {
             }
         }
 
-        return input;
+        return data;
     }
 
     private void fillPolygon(Face face) {

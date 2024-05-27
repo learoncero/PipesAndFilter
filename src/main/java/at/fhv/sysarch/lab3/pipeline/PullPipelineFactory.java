@@ -13,12 +13,8 @@ import javafx.animation.AnimationTimer;
 public class PullPipelineFactory {
     public static AnimationTimer createPipeline(PipelineData pd) {
         // TODO: pull from the source (model)
-        PullSource pullSource = new PullSource();
-        PullPipe<Face> pipeToModelViewTransformationFilter = new PullPipe<>(pullSource);
 
         // TODO 1. perform model-view transformation from model to VIEW SPACE coordinates
-        PullModelViewTransformationFilter<Face> pullModelViewTransformationFilter = new PullModelViewTransformationFilter<>(pipeToModelViewTransformationFilter, pd);
-        PullPipe<Face> pipeToBackfaceCullingFilter = new PullPipe<>(pullModelViewTransformationFilter);
 
         // TODO 2. perform backface culling in VIEW SPACE
 
@@ -59,10 +55,8 @@ public class PullPipelineFactory {
                 Mat4 rotationMatrix = Matrices.rotate(rotation, pd.getModelRotAxis());
 
                 // TODO compute updated model-view tranformation
-                pullModelViewTransformationFilter.setRotationMatrix(rotationMatrix);
 
                 // TODO update model-view filter
-                pullSource.setFaces(model.getFaces());
 
                 // TODO trigger rendering of the pipeline
             }

@@ -1,10 +1,9 @@
 package at.fhv.sysarch.lab3.pipeline.push;
 
 public interface IPushFilter<I, O> {
+    void setPipeSuccessor(IPushPipe<O> pipeSuccessor);
 
-    public void setPipeSuccessor(IPushPipe<O> pipeSuccessor);
+    void write(I data);
 
-    public void write(I input);
-
-    O process(I input);
+    O process(I data);
 }

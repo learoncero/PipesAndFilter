@@ -20,13 +20,13 @@ public class ModelViewTransformationFilter implements IPushFilter<Face, Face> {
     }
 
     @Override
-    public void write(Face input) {
-        Face face = process(input);
+    public void write(Face data) {
+        Face face = process(data);
         this.successor.write(face);
     }
 
     @Override
-    public Face process(Face face) {
+    public Face process(Face data) {
         if (rotationMatrix == null) {
             throw new IllegalStateException("Rotation matrix not set.");
         }
@@ -37,12 +37,12 @@ public class ModelViewTransformationFilter implements IPushFilter<Face, Face> {
         Mat4 transformationMatrix = viewTransform.multiply(modelTranslation).multiply(rotationMatrix);
 
         return new Face(
-                transformationMatrix.multiply(face.getV1()),
-                transformationMatrix.multiply(face.getV2()),
-                transformationMatrix.multiply(face.getV3()),
-                transformationMatrix.multiply(face.getN1()),
-                transformationMatrix.multiply(face.getN2()),
-                transformationMatrix.multiply(face.getN3())
+                transformationMatrix.multiply(data.getV1()),
+                transformationMatrix.multiply(data.getV2()),
+                transformationMatrix.multiply(data.getV3()),
+                transformationMatrix.multiply(data.getN1()),
+                transformationMatrix.multiply(data.getN2()),
+                transformationMatrix.multiply(data.getN3())
         );
     }
 

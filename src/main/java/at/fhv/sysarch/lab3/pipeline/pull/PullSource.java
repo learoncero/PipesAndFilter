@@ -1,25 +1,31 @@
 package at.fhv.sysarch.lab3.pipeline.pull;
 
 import at.fhv.sysarch.lab3.obj.Face;
+import at.fhv.sysarch.lab3.obj.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PullSource extends Pull<Face, Face> {
+public class PullSource implements IPullFilter<Model, Face>{
+    private List<Face> faces;
 
-    private final List<Face> faces;
-
-    public PullSource() {
-        super(null);
-        this.faces = new ArrayList<>();
+    public PullSource(Model model) {
+        this.faces = model.getFaces();
     }
 
-    public Face pull() {
-        return !hasNext() ? null : faces.remove(0);
+    @Override
+    public void setPipePredecessor(IPullPipe<Model> pipePredecessor) {
+        // no predecessor
     }
 
-    public void setFaces(List<Face> faces) {
-        this.faces.addAll(faces);
+    @Override
+    public Face read() {
+        return !hasNext() ? null : faces.remove(faces.size() - 1);
+    }
+
+    @Override
+    public Face process(Model data) {
+        return read();
     }
 
     @Override

@@ -20,15 +20,15 @@ public class ScreenSpaceTransformationFilter implements IPushFilter<Pair<Face, C
     }
 
     @Override
-    public void write(Pair<Face, Color> input) {
-        Pair<Face, Color> pair = process(input);
+    public void write(Pair<Face, Color> data) {
+        Pair<Face, Color> pair = process(data);
         this.successor.write(pair);
     }
 
     @Override
-    public Pair<Face, Color> process(Pair<Face, Color> input) {
+    public Pair<Face, Color> process(Pair<Face, Color> data) {
         Mat4 viewportTransform = pd.getViewportTransform();
-        Face face = input.fst();
+        Face face = data.fst();
 
         Face transformedFace = new Face(
                 viewportTransform.multiply(face.getV1().multiply(1 / face.getV1().getW())),
@@ -37,6 +37,6 @@ public class ScreenSpaceTransformationFilter implements IPushFilter<Pair<Face, C
                 face
         );
 
-        return new Pair<>(transformedFace, input.snd());
+        return new Pair<>(transformedFace, data.snd());
     }
 }

@@ -19,13 +19,13 @@ public class ColorFilter implements IPushFilter<Face, Pair<Face, Color>> {
     }
 
     @Override
-    public void write(Face input) {
-        Pair<Face, Color> pair = process(input);
+    public void write(Face data) {
+        Pair<Face, Color> pair = process(data);
         this.successor.write(pair);
     }
 
     @Override
-    public Pair<Face, Color> process(Face input) {
-        return new Pair<Face, Color>(input, pd.getModelColor());
+    public Pair<Face, Color> process(Face data) {
+        return new Pair<Face, Color>(data, pd.getModelColor());
     }
 }
