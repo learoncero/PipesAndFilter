@@ -20,7 +20,7 @@ public class PullSource implements IPullFilter<Model, Face>{
 
     @Override
     public Face read() {
-        return !hasNext() ? null : faces.remove(faces.size() - 1);
+        return !hasNext() ? null : faces.removeLast();
     }
 
     @Override
