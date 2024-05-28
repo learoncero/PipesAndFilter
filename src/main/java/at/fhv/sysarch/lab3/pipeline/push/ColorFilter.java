@@ -26,6 +26,6 @@ public class ColorFilter implements IPushFilter<Face, Pair<Face, Color>> {
 
     @Override
     public Pair<Face, Color> process(Face data) {
-        return new Pair<Face, Color>(data, pd.getModelColor());
+        return new Pair<>(data, pd.getModelColor());
     }
 }

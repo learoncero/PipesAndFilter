@@ -2,7 +2,7 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 
 import at.fhv.sysarch.lab3.obj.Face;
 
-public class BackfaceCullingFilter implements IPullFilter<Face, Face> {
+public class PullBackfaceCullingFilter implements IPullFilter<Face, Face> {
     private IPullPipe<Face> predecessor;
 
     @Override
