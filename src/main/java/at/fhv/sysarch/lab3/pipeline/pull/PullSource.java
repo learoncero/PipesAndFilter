@@ -5,6 +5,7 @@ import at.fhv.sysarch.lab3.obj.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PullSource implements IPullFilter<Model, Face>{
     private List<Face> faces;
@@ -18,14 +19,14 @@ public class PullSource implements IPullFilter<Model, Face>{
         // no predecessor
     }
 
-    @Override
-    public Face read() {
-        return !hasNext() ? null : faces.removeLast();
+    public Optional<Face> read() {
+        return !hasNext() ? Optional.empty() : Optional.of(faces.removeLast());
     }
 
     @Override
     public Face process(Model data) {
-        return read();
+        // no processing
+        throw new UnsupportedOperationException("PullSource does not support process operation.");
     }
 
     public boolean hasNext() {

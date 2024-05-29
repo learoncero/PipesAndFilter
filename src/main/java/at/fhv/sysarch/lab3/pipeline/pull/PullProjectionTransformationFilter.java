@@ -32,7 +32,7 @@ public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face
     }
 
     @Override
-    public Optional<Pair<Face, Color>> read() {#
+    public Optional<Pair<Face, Color>> read() {
         Optional<Pair<Face, Color>> optionalPair = predecessor.read();
         if (optionalPair.isEmpty()) {
             return Optional.empty();
