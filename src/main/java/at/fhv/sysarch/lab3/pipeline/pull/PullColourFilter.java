@@ -37,7 +37,7 @@ public class PullColourFilter implements IPullFilter<Face, Pair<Face, Color>> {
             return Optional.empty();
         } else {
             Face face = optionalPair.get();
-            return Optional.of(process(face));
+            return Optional.ofNullable(process(face));
         }
     }
 

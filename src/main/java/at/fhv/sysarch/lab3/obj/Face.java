@@ -67,4 +67,16 @@ public class Face {
     public Vec4 getN3() {
         return this.n3;
     }
+
+    @Override
+    public String toString() {
+        return "Face{" +
+                "v1=" + v1 +
+                ", v2=" + v2 +
+                ", v3=" + v3 +
+                ", n1=" + n1 +
+                ", n2=" + n2 +
+                ", n3=" + n3 +
+                '}';
+    }
 }

@@ -13,13 +13,14 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import at.fhv.sysarch.lab3.pipeline.data.Pair;
+import com.hackoeur.jglm.Vec4;
 import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
 public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private IPullPipe<Pair<Face, Color>> predecessor;
-    private PipelineData pd;
+    private final PipelineData pd;
 
     public PullLightingFilter(PipelineData pd) {
         this.pd = pd;
@@ -37,7 +38,7 @@ public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<F
             return Optional.empty();
         } else {
             Pair<Face, Color> pair = optionalPair.get();
-            return Optional.of(process(pair));
+            return Optional.ofNullable(process(pair));
         }
     }
 

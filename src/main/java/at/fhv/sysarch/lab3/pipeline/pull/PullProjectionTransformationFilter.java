@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>>{
     private IPullPipe<Pair<Face, Color>> predecessor;
-    private PipelineData pd;
+    private final PipelineData pd;
 
     public PullProjectionTransformationFilter(PipelineData pd) {
         this.pd = pd;
@@ -38,7 +38,7 @@ public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face
             return Optional.empty();
         } else {
             Pair<Face, Color> pair = optionalPair.get();
-            return Optional.of(process(pair));
+            return Optional.ofNullable(process(pair));
         }
     }
 

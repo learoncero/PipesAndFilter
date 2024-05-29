@@ -11,7 +11,7 @@ public class PullSource implements IPullFilter<Model, Face>{
     private List<Face> faces;
 
     public PullSource(Model model) {
-        this.faces = model.getFaces();
+        this.faces = new ArrayList<>(model.getFaces());
     }
 
     @Override
@@ -20,13 +20,17 @@ public class PullSource implements IPullFilter<Model, Face>{
     }
 
     public Optional<Face> read() {
-        return !hasNext() ? Optional.empty() : Optional.of(faces.removeLast());
+        return !hasNext() ? Optional.empty() : Optional.ofNullable(faces.removeLast());
     }
 
     @Override
     public Face process(Model data) {
         // no processing
         throw new UnsupportedOperationException("PullSource does not support process operation.");
+    }
+
+    public void setModel(Model model) {
+        this.faces = new ArrayList<>(model.getFaces());
     }
 
     public boolean hasNext() {

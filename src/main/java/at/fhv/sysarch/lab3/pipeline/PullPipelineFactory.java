@@ -19,6 +19,7 @@ public class PullPipelineFactory {
         modelViewToSourcePipe.setFilterPredecessor(pullSource);
         PullModelViewTransformationFilter modelViewFilter = new PullModelViewTransformationFilter(pd);
         modelViewFilter.setPipePredecessor(modelViewToSourcePipe);
+
         // TODO 2. perform backface culling in VIEW SPACE
         PullPipe<Face> backfaceCullingToModelViewPipe = new PullPipe<>();
         backfaceCullingToModelViewPipe.setFilterPredecessor(modelViewFilter);
@@ -28,6 +29,7 @@ public class PullPipelineFactory {
 
 
         // TODO 4. add coloring (space unimportant)
+
         PullPipe<Face> coloringToBackfaceCullingPipe = new PullPipe<>();
         coloringToBackfaceCullingPipe.setFilterPredecessor(backfaceCullingFilter);
         PullColourFilter colouringFilter = new PullColourFilter(pd);
@@ -44,7 +46,6 @@ public class PullPipelineFactory {
             // 5. TODO perform projection transformation on VIEW SPACE coordinates
             PullPipe<Pair<Face, Color>> projectionToLightingPipe = new PullPipe<>();
             projectionToLightingPipe.setFilterPredecessor(lightingFilter);
-
             projectionFilter.setPipePredecessor(projectionToLightingPipe);
         } else {
             // 5. TODO perform projection transformation
@@ -58,12 +59,12 @@ public class PullPipelineFactory {
             perspectiveToProjectionPipe.setFilterPredecessor(projectionFilter);
             PullScreenSpaceTransformationFilter screenSpaceFilter = new PullScreenSpaceTransformationFilter(pd);
             screenSpaceFilter.setPipePredecessor(perspectiveToProjectionPipe);
-
         // TODO 7. feed into the sink (renderer)
             PullPipe<Pair<Face, Color>> sinkToScreenSpacePipe = new PullPipe<>();
             sinkToScreenSpacePipe.setFilterPredecessor(screenSpaceFilter);
             PullSink pullSink = new PullSink(pd.getGraphicsContext(), pd.getModelColor(), pd.getRenderingMode());
             pullSink.setPipePredecessor(sinkToScreenSpacePipe);
+
         // returning an animation renderer which handles clearing of the
         // viewport and computation of the praction
         return new AnimationRenderer(pd) {
@@ -88,9 +89,11 @@ public class PullPipelineFactory {
                 modelViewFilter.setRotationMatrix(rotationMatrix);
 
                 // TODO update model-view filter
-
+                pullSource.setModel(model);
                 // TODO trigger rendering of the pipeline
-                pullSink.read();
+                while(pullSink.read().isPresent()){
+                    pullSink.read();
+                }
             }
         };
     }
