@@ -12,12 +12,14 @@ public class Source implements IPushFilter<Model, Face> {
         this.successor = pipeSuccessor;
     }
 
+    @Override
     public void write(Model data) {
         data.getFaces().forEach(face -> successor.write(face));
     }
 
     @Override
     public Face process(Model data) {
-        return null;
+        // no processing
+        throw new UnsupportedOperationException("PushSource does not support process operation.");
     }
 }

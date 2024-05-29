@@ -1,5 +1,7 @@
 package at.fhv.sysarch.lab3.pipeline.pull;
 
+import java.util.Optional;
+
 public class PullPipe<I> implements IPullPipe<I> {
 
     private IPullFilter<?, I> predecessor;
@@ -10,12 +12,7 @@ public class PullPipe<I> implements IPullPipe<I> {
     }
 
     @Override
-    public I read() {
+    public Optional<I> read() {
         return this.predecessor.read();
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 }
