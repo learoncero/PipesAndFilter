@@ -17,6 +17,8 @@ import at.fhv.sysarch.lab3.pipeline.push.Pipe;
 import com.hackoeur.jglm.Mat4;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
+
 public class PullScreenSpaceTransformationFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>>{
     IPullPipe<Pair<Face, Color>> predecessor;
     private final PipelineData pd;
@@ -31,9 +33,14 @@ public class PullScreenSpaceTransformationFilter implements IPullFilter<Pair<Fac
     }
 
     @Override
-    public Pair<Face, Color> read() {
-        Pair<Face, Color> pair = predecessor.read();
-        return process(pair);
+    public Optional<Pair<Face, Color>> read() {
+        Optional<Pair<Face, Color>> optionalPair = predecessor.read();
+        if (optionalPair.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Pair<Face, Color> pair = optionalPair.get();
+            return Optional.of(process(pair));
+        }
     }
 
     @Override
@@ -49,10 +56,5 @@ public class PullScreenSpaceTransformationFilter implements IPullFilter<Pair<Fac
         );
 
         return new Pair<>(transformedFace, data.snd());
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 }

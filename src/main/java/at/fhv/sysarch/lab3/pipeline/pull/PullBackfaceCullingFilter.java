@@ -2,6 +2,8 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 
 import at.fhv.sysarch.lab3.obj.Face;
 
+import java.util.Optional;
+
 public class PullBackfaceCullingFilter implements IPullFilter<Face, Face> {
     private IPullPipe<Face> predecessor;
 
@@ -11,18 +13,18 @@ public class PullBackfaceCullingFilter implements IPullFilter<Face, Face> {
     }
 
     @Override
-    public Face read() {
-        Face face = predecessor.read();
-        return process(face);
+    public Optional<Face> read() {
+        Optional<Face> optionalFace = predecessor.read();
+        if (optionalFace.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Face face = optionalFace.get();
+            return Optional.of(process(face));
+        }
     }
 
     @Override
     public Face process(Face data) {
         return null;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 }

@@ -28,7 +28,6 @@ public class PullSource implements IPullFilter<Model, Face>{
         return read();
     }
 
-    @Override
     public boolean hasNext() {
         return !faces.isEmpty();
     }

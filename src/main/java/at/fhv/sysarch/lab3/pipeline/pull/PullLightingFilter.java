@@ -15,6 +15,8 @@ import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import at.fhv.sysarch.lab3.pipeline.data.Pair;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
+
 public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private IPullPipe<Pair<Face, Color>> predecessor;
     private PipelineData pd;
@@ -29,9 +31,14 @@ public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<F
     }
 
     @Override
-    public Pair<Face, Color> read() {
-        Pair<Face, Color> pair = predecessor.read();
-        return process(pair);
+    public Optional<Pair<Face, Color>> read() {
+        Optional<Pair<Face, Color>> optionalPair = predecessor.read();
+        if (optionalPair.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Pair<Face, Color> pair = optionalPair.get();
+            return Optional.of(process(pair));
+        }
     }
 
     @Override
@@ -46,18 +53,4 @@ public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<F
             return new Pair<>(face, color.deriveColor(0, 1, dotProduct, 1));
         }
     }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
-    }
-
-    /*
-
-
-
-
-
-    }*/
-
 }
