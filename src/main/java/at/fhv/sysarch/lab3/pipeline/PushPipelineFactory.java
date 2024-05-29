@@ -22,6 +22,7 @@ public class PushPipelineFactory {
         source.setPipeSuccessor(toModelViewTransformationPipe);
         toModelViewTransformationPipe.setFilterSuccessor(modelViewTransformationFilter);
 
+        //todo why no pd in constructor
         // TODO 2. perform backface culling in VIEW SPACE
         BackfaceCullingFilter backfaceCullingFilter = new BackfaceCullingFilter();
         Pipe<Face> toBackfaceCullingPipe = new Pipe<>();

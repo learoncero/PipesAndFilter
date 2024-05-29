@@ -1,7 +1,5 @@
 package at.fhv.sysarch.lab3.pipeline.pull;
 
-import at.fhv.sysarch.lab3.obj.Face;
-
 import java.util.Optional;
 
 public interface IPullFilter<I, O> {
