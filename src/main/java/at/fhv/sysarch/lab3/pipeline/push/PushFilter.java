@@ -12,6 +12,7 @@ public class PushFilter implements IPushFilter<Face, Face> {
         this.successor = pipeSuccessor;
     }
 
+    @Override
     public void write(Face data) {
         Face newFace = new Face(data.getV1().multiply(100), data.getV2().multiply(100), data.getV3().multiply(100), data);
         this.successor.write(newFace);

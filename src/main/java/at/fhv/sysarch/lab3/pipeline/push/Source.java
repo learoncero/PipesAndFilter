@@ -12,6 +12,7 @@ public class Source implements IPushFilter<Model, Face> {
         this.successor = pipeSuccessor;
     }
 
+    @Override
     public void write(Model data) {
         data.getFaces().forEach(face -> successor.write(face));
     }
