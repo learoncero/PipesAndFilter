@@ -4,6 +4,8 @@ import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import com.hackoeur.jglm.Mat4;
 
+import java.util.Optional;
+
 public class PullModelViewTransformationFilter implements IPullFilter<Face, Face>{
     private IPullPipe<Face> predecessor;
     private PipelineData pd;
@@ -20,9 +22,14 @@ public class PullModelViewTransformationFilter implements IPullFilter<Face, Face
     }
 
     @Override
-    public Face read() {
-        Face face = predecessor.read();
-        return process(face);
+    public Optional<Face> read() {
+        Optional<Face> optionalFace = predecessor.read();
+        if (optionalFace.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Face face = optionalFace.get();
+            return Optional.of(process(face));
+        }
     }
 
     @Override
@@ -39,11 +46,6 @@ public class PullModelViewTransformationFilter implements IPullFilter<Face, Face
                 rotationMatrix.multiply(data.getN2()),
                 rotationMatrix.multiply(data.getN3())
         );
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 
     public void setRotationMatrix(Mat4 rotationMatrix) {

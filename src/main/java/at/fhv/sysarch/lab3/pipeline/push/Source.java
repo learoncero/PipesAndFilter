@@ -19,6 +19,7 @@ public class Source implements IPushFilter<Model, Face> {
 
     @Override
     public Face process(Model data) {
-        return null;
+        // no processing
+        throw new UnsupportedOperationException("PushSource does not support process operation.");
     }
 }

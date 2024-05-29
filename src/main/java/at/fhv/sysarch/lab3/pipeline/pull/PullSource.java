@@ -3,8 +3,8 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.obj.Model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PullSource implements IPullFilter<Model, Face>{
     private List<Face> faces;
@@ -19,16 +19,16 @@ public class PullSource implements IPullFilter<Model, Face>{
     }
 
     @Override
-    public Face read() {
-        return !hasNext() ? null : faces.remove(faces.size() - 1);
+    public Optional<Face> read() {
+        return !hasNext() ? Optional.empty() : Optional.of(faces.remove(faces.size() - 1));
     }
 
     @Override
     public Face process(Model data) {
-        return read();
+        // no processing
+        throw new UnsupportedOperationException("PullSource does not support process operation.");
     }
 
-    @Override
     public boolean hasNext() {
         return !faces.isEmpty();
     }
