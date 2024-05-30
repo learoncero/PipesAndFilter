@@ -16,9 +16,11 @@ import at.fhv.sysarch.lab3.pipeline.data.Pair;
 import com.hackoeur.jglm.Mat4;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
+
 public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>>{
     private IPullPipe<Pair<Face, Color>> predecessor;
-    private PipelineData pd;
+    private final PipelineData pd;
 
     public PullProjectionTransformationFilter(PipelineData pd) {
         this.pd = pd;
@@ -30,9 +32,14 @@ public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face
     }
 
     @Override
-    public Pair<Face, Color> read() {
-        Pair<Face, Color> pair = predecessor.read();
-        return process(pair);
+    public Optional<Pair<Face, Color>> read() {
+        Optional<Pair<Face, Color>> optionalPair = predecessor.read();
+        if (optionalPair.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Pair<Face, Color> pair = optionalPair.get();
+            return Optional.ofNullable(process(pair));
+        }
     }
 
     @Override
@@ -48,10 +55,5 @@ public class PullProjectionTransformationFilter implements IPullFilter<Pair<Face
         );
 
         return new Pair<>(projectedFace, data.snd());
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 }

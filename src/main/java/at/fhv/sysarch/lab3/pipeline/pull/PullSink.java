@@ -16,6 +16,8 @@ import at.fhv.sysarch.lab3.rendering.RenderingMode;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.Optional;
+
 public class PullSink implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private final GraphicsContext gpc;
     private final Color modelColor;
@@ -34,9 +36,14 @@ public class PullSink implements IPullFilter<Pair<Face, Color>, Pair<Face, Color
     }
 
     @Override
-    public Pair<Face, Color> read() {
-       Pair<Face, Color> pair = predecessor.read();
-       return process(pair);
+    public Optional<Pair<Face, Color>> read() {
+        Optional<Pair<Face, Color>> optionalPair = predecessor.read();
+        if (optionalPair.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Pair<Face, Color> pair = optionalPair.get();
+            return Optional.of(process(pair));
+        }
     }
 
     @Override
@@ -57,11 +64,6 @@ public class PullSink implements IPullFilter<Pair<Face, Color>, Pair<Face, Color
         }
 
         return data;
-    }
-
-    @Override
-    public boolean hasNext() {
-        return predecessor.hasNext();
     }
 
     private void fillPolygon(Face face) {
