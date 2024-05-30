@@ -67,7 +67,7 @@ public class PushPipelineFactory {
         toScreenSpaceTransformationPipe.setFilterSuccessor(screenSpaceTransformationFilter);
 
         // TODO 7. feed into the sink (renderer)
-        Sink sink = new Sink(pd.getGraphicsContext(), pd.getModelColor(), pd.getRenderingMode());
+        Sink sink = new Sink(pd.getGraphicsContext(), pd.getRenderingMode());
         Pipe<Pair<Face, Color>> toSinkPipe = new Pipe<>();
         screenSpaceTransformationFilter.setPipeSuccessor(toSinkPipe);
         toSinkPipe.setFilterSuccessor(sink);

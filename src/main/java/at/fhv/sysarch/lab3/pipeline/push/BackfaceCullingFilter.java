@@ -2,14 +2,7 @@ package at.fhv.sysarch.lab3.pipeline.push;
 
 import at.fhv.sysarch.lab3.obj.Face;
 
-public class BackfaceCullingFilter implements IPushFilter<Face, Face> {
-    private IPushPipe<Face> successor;
-
-    @Override
-    public void setPipeSuccessor(IPushPipe<Face> pipeSuccessor) {
-        this.successor = pipeSuccessor;
-    }
-
+public class BackfaceCullingFilter extends APushFilter<Face, Face> {
     @Override
     public void write(Face data) {
         Face face = process(data);

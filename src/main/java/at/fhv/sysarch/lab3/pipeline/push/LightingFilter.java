@@ -5,17 +5,11 @@ import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import at.fhv.sysarch.lab3.pipeline.data.Pair;
 import javafx.scene.paint.Color;
 
-public class LightingFilter implements IPushFilter<Pair<Face, Color>, Pair<Face, Color>>{
-    private IPushPipe<Pair<Face, Color>> successor;
+public class LightingFilter extends APushFilter<Pair<Face, Color>, Pair<Face, Color>>{
     private PipelineData pd;
 
     public LightingFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-    @Override
-    public void setPipeSuccessor(IPushPipe<Pair<Face, Color>> pipeSuccessor) {
-        this.successor = pipeSuccessor;
     }
 
     @Override

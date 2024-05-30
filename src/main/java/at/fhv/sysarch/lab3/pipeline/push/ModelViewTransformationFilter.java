@@ -4,19 +4,12 @@ import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import com.hackoeur.jglm.Mat4;
 
-public class ModelViewTransformationFilter implements IPushFilter<Face, Face> {
-
-    private IPushPipe<Face> successor;
+public class ModelViewTransformationFilter extends APushFilter<Face, Face> {
     private final PipelineData pd;
     private Mat4 rotationMatrix;
 
     public ModelViewTransformationFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-    @Override
-    public void setPipeSuccessor(IPushPipe<Face> pipeSuccessor) {
-        this.successor = pipeSuccessor;
     }
 
     @Override
