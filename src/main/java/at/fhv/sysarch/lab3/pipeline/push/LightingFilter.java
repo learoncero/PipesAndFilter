@@ -32,7 +32,7 @@ public class LightingFilter implements IPushFilter<Pair<Face, Color>, Pair<Face,
             Face face = data.fst();
             Color color = data.snd();
 
-            float dotProduct = face.getN1().toVec3().dot(pd.getLightPos().getUnitVector());
+            float dotProduct = face.getN1().toVec3().getUnitVector().dot(pd.getLightPos().getUnitVector());
             return new Pair<>(face, color.deriveColor(0, 1, dotProduct, 1));
         }
     }

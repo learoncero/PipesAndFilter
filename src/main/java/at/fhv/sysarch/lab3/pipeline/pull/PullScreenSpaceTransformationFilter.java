@@ -44,35 +44,17 @@ public class PullScreenSpaceTransformationFilter implements IPullFilter<Pair<Fac
     }
 
     @Override
-    public Pair<Face, Color> process(Pair<Face, Color> pair) {
-
-        return new Pair<>(
-                new Face(
-                        applyTransformation(pair.fst().getV1()),
-                        applyTransformation(pair.fst().getV2()),
-                        applyTransformation(pair.fst().getV3()),
-                        pair.fst()
-                ),
-                pair.snd()
-        );
-    }
-
-    private Vec4 applyTransformation(Vec4 vec) {
-        return pd.getViewportTransform().multiply(vec.multiply(1f / vec.getW()));
-    }
-
-    /*@Override
     public Pair<Face, Color> process(Pair<Face, Color> data) {
         Mat4 viewportTransform = pd.getViewportTransform();
         Face face = data.fst();
 
         Face transformedFace = new Face(
-                viewportTransform.multiply(face.getV1().multiply(1f / face.getV1().getW())),
-                viewportTransform.multiply(face.getV2().multiply(1f / face.getV2().getW())),
-                viewportTransform.multiply(face.getV3().multiply(1f / face.getV3().getW())),
+                viewportTransform.multiply(face.getV1().multiply(1 / face.getV1().getW())),
+                viewportTransform.multiply(face.getV2().multiply(1 / face.getV2().getW())),
+                viewportTransform.multiply(face.getV3().multiply(1 / face.getV3().getW())),
                 face
         );
 
         return new Pair<>(transformedFace, data.snd());
-    }*/
+    }
 }

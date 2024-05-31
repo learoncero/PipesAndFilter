@@ -20,7 +20,7 @@ public class PullSource implements IPullFilter<Model, Face>{
     }
 
     public Optional<Face> read() {
-        return !hasNext() ? Optional.empty() : Optional.ofNullable(faces.removeLast());
+        return !hasNext() ? Optional.empty() : Optional.ofNullable(faces.removeFirst());
     }
 
     @Override
