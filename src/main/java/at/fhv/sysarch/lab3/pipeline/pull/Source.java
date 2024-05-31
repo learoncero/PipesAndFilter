@@ -20,7 +20,7 @@ public class Source extends APullFilter<Model, Face>{
     }
 
     public Optional<Face> read() {
-        return !hasNext() ? Optional.empty() : Optional.ofNullable(faces.removeFirst());
+        return !hasNext() ? Optional.empty() : Optional.ofNullable(faces.removeLast());
     }
 
     @Override
