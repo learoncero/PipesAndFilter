@@ -5,10 +5,10 @@ import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import at.fhv.sysarch.lab3.pipeline.data.Pair;
 import javafx.scene.paint.Color;
 
-public class ColorFilter extends APushFilter<Face, Pair<Face, Color>> {
+public class ColourFilter extends APushFilter<Face, Pair<Face, Color>> {
     private final PipelineData pd;
 
-    public ColorFilter(PipelineData pd) {
+    public ColourFilter(PipelineData pd) {
         this.pd = pd;
     }
 

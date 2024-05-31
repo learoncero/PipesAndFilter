@@ -17,17 +17,11 @@ import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
-public class PullColourFilter implements IPullFilter<Face, Pair<Face, Color>> {
-    private IPullPipe<Face> predecessor;
+public class ColourFilter extends APullFilter<Face, Pair<Face, Color>> {
     private final PipelineData pd;
 
-    public PullColourFilter(PipelineData pd) {
+    public ColourFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-    @Override
-    public void setPipePredecessor(IPullPipe<Face> pipePredecessor) {
-        this.predecessor = pipePredecessor;
     }
 
     @Override

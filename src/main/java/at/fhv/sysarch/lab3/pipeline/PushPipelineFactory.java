@@ -33,10 +33,10 @@ public class PushPipelineFactory {
         // implemented in pull pipeline
 
         // TODO 4. add coloring (space unimportant)
-        ColorFilter colorFilter = new ColorFilter(pd);
+        ColourFilter colourFilter = new ColourFilter(pd);
         Pipe<Face> toColorFilter = new Pipe<>();
         backfaceCullingFilter.setPipeSuccessor(toColorFilter);
-        toColorFilter.setFilterSuccessor(colorFilter);
+        toColorFilter.setFilterSuccessor(colourFilter);
 
         // lighting can be switched on/off
         ProjectionTransformationFilter projectionTransformationFilter = new ProjectionTransformationFilter(pd);
@@ -45,7 +45,7 @@ public class PushPipelineFactory {
             // 4a. TODO perform lighting in VIEW SPACE
             LightingFilter lightingFilter = new LightingFilter(pd);
             Pipe<Pair<Face, Color>> toLightingFilter = new Pipe<>();
-            colorFilter.setPipeSuccessor(toLightingFilter);
+            colourFilter.setPipeSuccessor(toLightingFilter);
             toLightingFilter.setFilterSuccessor(lightingFilter);
 
             // 5. TODO perform projection transformation on VIEW SPACE coordinates
@@ -56,7 +56,7 @@ public class PushPipelineFactory {
         } else {
             // 5. TODO perform projection transformation
             Pipe <Pair<Face, Color>> colorToProjectionTransformationFilter = new Pipe<>();
-            colorFilter.setPipeSuccessor(colorToProjectionTransformationFilter);
+            colourFilter.setPipeSuccessor(colorToProjectionTransformationFilter);
             colorToProjectionTransformationFilter.setFilterSuccessor(projectionTransformationFilter);
         }
 

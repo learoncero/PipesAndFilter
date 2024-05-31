@@ -13,57 +13,58 @@ import javafx.scene.paint.Color;
 public class PullPipelineFactory {
     public static AnimationTimer createPipeline(PipelineData pd) {
         // TODO: pull from the source (model)
-        PullSource pullSource = new PullSource(pd.getModel());
+        Source source = new Source(pd.getModel());
+
         // TODO 1. perform model-view transformation from model to VIEW SPACE coordinates
-        PullPipe<Face> modelViewToSourcePipe = new PullPipe<>();
-        modelViewToSourcePipe.setFilterPredecessor(pullSource);
-        PullModelViewTransformationFilter modelViewFilter = new PullModelViewTransformationFilter(pd);
+        Pipe<Face> modelViewToSourcePipe = new Pipe<>();
+        modelViewToSourcePipe.setFilterPredecessor(source);
+        ModelViewTransformationFilter modelViewFilter = new ModelViewTransformationFilter(pd);
         modelViewFilter.setPipePredecessor(modelViewToSourcePipe);
 
         // TODO 2. perform backface culling in VIEW SPACE
-        PullPipe<Face> backfaceCullingToModelViewPipe = new PullPipe<>();
+        Pipe<Face> backfaceCullingToModelViewPipe = new Pipe<>();
         backfaceCullingToModelViewPipe.setFilterPredecessor(modelViewFilter);
-        PullBackfaceCullingFilter backfaceCullingFilter = new PullBackfaceCullingFilter();
+        BackfaceCullingFilter backfaceCullingFilter = new BackfaceCullingFilter();
         backfaceCullingFilter.setPipePredecessor(backfaceCullingToModelViewPipe);
         // TODO 3. perform depth sorting in VIEW SPACE
 
 
         // TODO 4. add coloring (space unimportant)
 
-        PullPipe<Face> coloringToBackfaceCullingPipe = new PullPipe<>();
+        Pipe<Face> coloringToBackfaceCullingPipe = new Pipe<>();
         coloringToBackfaceCullingPipe.setFilterPredecessor(backfaceCullingFilter);
-        PullColourFilter colouringFilter = new PullColourFilter(pd);
+        ColourFilter colouringFilter = new ColourFilter(pd);
         colouringFilter.setPipePredecessor(coloringToBackfaceCullingPipe);
         // lighting can be switched on/off
-        PullProjectionTransformationFilter projectionFilter = new PullProjectionTransformationFilter(pd);
+        ProjectionTransformationFilter projectionFilter = new ProjectionTransformationFilter(pd);
 
         if (pd.isPerformLighting()) {
             // 4a. TODO perform lighting in VIEW SPACE
-            PullPipe<Pair<Face, Color>> lightingToColouringPipe = new PullPipe<>();
+            Pipe<Pair<Face, Color>> lightingToColouringPipe = new Pipe<>();
             lightingToColouringPipe.setFilterPredecessor(colouringFilter);
-            PullLightingFilter lightingFilter = new PullLightingFilter(pd);
+            LightingFilter lightingFilter = new LightingFilter(pd);
             lightingFilter.setPipePredecessor(lightingToColouringPipe);
             // 5. TODO perform projection transformation on VIEW SPACE coordinates
-            PullPipe<Pair<Face, Color>> projectionToLightingPipe = new PullPipe<>();
+            Pipe<Pair<Face, Color>> projectionToLightingPipe = new Pipe<>();
             projectionToLightingPipe.setFilterPredecessor(lightingFilter);
             projectionFilter.setPipePredecessor(projectionToLightingPipe);
         } else {
             // 5. TODO perform projection transformation
-            PullPipe<Pair<Face, Color>> projectionToColouringPipe = new PullPipe<>();
+            Pipe<Pair<Face, Color>> projectionToColouringPipe = new Pipe<>();
             projectionToColouringPipe.setFilterPredecessor(colouringFilter);
             projectionFilter.setPipePredecessor(projectionToColouringPipe);
         }
 
         // TODO 6. perform perspective division to screen coordinates
-            PullPipe<Pair<Face, Color>> perspectiveToProjectionPipe = new PullPipe<>();
+            Pipe<Pair<Face, Color>> perspectiveToProjectionPipe = new Pipe<>();
             perspectiveToProjectionPipe.setFilterPredecessor(projectionFilter);
-            PullScreenSpaceTransformationFilter screenSpaceFilter = new PullScreenSpaceTransformationFilter(pd);
+            ScreenSpaceTransformationFilter screenSpaceFilter = new ScreenSpaceTransformationFilter(pd);
             screenSpaceFilter.setPipePredecessor(perspectiveToProjectionPipe);
         // TODO 7. feed into the sink (renderer)
-            PullPipe<Pair<Face, Color>> sinkToScreenSpacePipe = new PullPipe<>();
+            Pipe<Pair<Face, Color>> sinkToScreenSpacePipe = new Pipe<>();
             sinkToScreenSpacePipe.setFilterPredecessor(screenSpaceFilter);
-            PullSink pullSink = new PullSink(pd.getGraphicsContext(), pd.getModelColor(), pd.getRenderingMode());
-            pullSink.setPipePredecessor(sinkToScreenSpacePipe);
+            Sink sink = new Sink(pd.getGraphicsContext(), pd.getRenderingMode());
+            sink.setPipePredecessor(sinkToScreenSpacePipe);
 
         // returning an animation renderer which handles clearing of the
         // viewport and computation of the praction
@@ -89,10 +90,10 @@ public class PullPipelineFactory {
                 modelViewFilter.setRotationMatrix(rotationMatrix);
 
                 // TODO update model-view filter
-                pullSource.setModel(model);
+                source.setModel(model);
                 // TODO trigger rendering of the pipeline
-                while(pullSink.read().isPresent()){
-                    pullSink.read();
+                while(sink.read().isPresent()){
+                    sink.read();
                 }
             }
         };
