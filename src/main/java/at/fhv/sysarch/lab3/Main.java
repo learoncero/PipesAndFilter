@@ -51,7 +51,7 @@ public class Main extends Application {
 
         stage.setScene(s);
         stage.setTitle("Simple CG Pipeline");
-        stage.setFullScreen(false);  // Ensure it's not full screen
+        stage.setFullScreen(false);
         stage.show();
 
         om.ifPresent(m -> {

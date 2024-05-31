@@ -18,21 +18,13 @@ import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
-public class PullSink implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>> {
+public class Sink extends APullFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private final GraphicsContext gpc;
-    private final Color modelColor;
     private final RenderingMode renderingMode;
-    private IPullPipe<Pair<Face, Color>> predecessor;
 
-    public PullSink(GraphicsContext gpc, Color modelColor, RenderingMode renderingMode) {
+    public Sink(GraphicsContext gpc, RenderingMode renderingMode) {
         this.gpc = gpc;
-        this.modelColor = modelColor;
         this.renderingMode = renderingMode;
-    }
-
-    @Override
-    public void setPipePredecessor(IPullPipe<Pair<Face, Color>> pipePredecessor) {
-        this.predecessor = pipePredecessor;
     }
 
     @Override

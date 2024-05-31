@@ -1,17 +1,10 @@
 package at.fhv.sysarch.lab3.pipeline.pull;
 
 import at.fhv.sysarch.lab3.obj.Face;
-import com.hackoeur.jglm.Vec4;
 
 import java.util.Optional;
 
-public class PullBackfaceCullingFilter implements IPullFilter<Face, Face> {
-    private IPullPipe<Face> predecessor;
-
-    @Override
-    public void setPipePredecessor(IPullPipe<Face> pipePredecessor) {
-        this.predecessor = pipePredecessor;
-    }
+public class BackfaceCullingFilter extends APullFilter<Face, Face> {
 
     @Override
     public Optional<Face> read() {

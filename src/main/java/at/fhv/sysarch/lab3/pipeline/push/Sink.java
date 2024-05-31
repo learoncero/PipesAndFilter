@@ -7,21 +7,13 @@ import at.fhv.sysarch.lab3.rendering.RenderingMode;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Sink implements IPushFilter<Pair<Face, Color>, Pair<Face, Color>> {
+public class Sink extends APushFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private final GraphicsContext gpc;
-    private final Color modelColor;
     private final RenderingMode renderingMode;
 
-    public Sink(GraphicsContext gpc, Color modelColor, RenderingMode renderingMode) {
+    public Sink(GraphicsContext gpc, RenderingMode renderingMode) {
         this.gpc = gpc;
-        this.modelColor = modelColor;
         this.renderingMode = renderingMode;
-    }
-
-
-    @Override
-    public void setPipeSuccessor(IPushPipe<Pair<Face, Color>> pipeSuccessor) {
-        // No successor
     }
 
     @Override

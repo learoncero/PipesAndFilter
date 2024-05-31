@@ -6,19 +6,12 @@ import com.hackoeur.jglm.Mat4;
 
 import java.util.Optional;
 
-public class PullModelViewTransformationFilter implements IPullFilter<Face, Face>{
-    private IPullPipe<Face> predecessor;
+public class ModelViewTransformationFilter extends APullFilter<Face, Face>{
     private final PipelineData pd;
     private Mat4 rotationMatrix;
 
-    public PullModelViewTransformationFilter(PipelineData pd) {
+    public ModelViewTransformationFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-
-    @Override
-    public void setPipePredecessor(IPullPipe<Face> pipePredecessor) {
-        this.predecessor = pipePredecessor;
     }
 
     @Override

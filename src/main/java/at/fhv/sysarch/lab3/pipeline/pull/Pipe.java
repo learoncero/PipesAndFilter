@@ -2,7 +2,7 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 
 import java.util.Optional;
 
-public class PullPipe<I> implements IPullPipe<I> {
+public class Pipe<I> implements IPullPipe<I> {
 
     private IPullFilter<?, I> predecessor;
 

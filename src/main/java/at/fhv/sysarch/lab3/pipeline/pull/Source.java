@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PullSource implements IPullFilter<Model, Face>{
+public class Source extends APullFilter<Model, Face>{
     private List<Face> faces;
 
-    public PullSource(Model model) {
+    public Source(Model model) {
         this.faces = new ArrayList<>(model.getFaces());
     }
 

@@ -13,22 +13,16 @@ package at.fhv.sysarch.lab3.pipeline.pull;
 import at.fhv.sysarch.lab3.obj.Face;
 import at.fhv.sysarch.lab3.pipeline.PipelineData;
 import at.fhv.sysarch.lab3.pipeline.data.Pair;
-import com.hackoeur.jglm.Vec4;
+import com.hackoeur.jglm.Mat4;
 import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
-public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<Face, Color>> {
-    private IPullPipe<Pair<Face, Color>> predecessor;
+public class ProjectionTransformationFilter extends APullFilter<Pair<Face, Color>, Pair<Face, Color>>{
     private final PipelineData pd;
 
-    public PullLightingFilter(PipelineData pd) {
+    public ProjectionTransformationFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-    @Override
-    public void setPipePredecessor(IPullPipe<Pair<Face, Color>> pipePredecessor) {
-        this.predecessor = pipePredecessor;
     }
 
     @Override
@@ -44,12 +38,16 @@ public class PullLightingFilter implements IPullFilter<Pair<Face, Color>, Pair<F
 
     @Override
     public Pair<Face, Color> process(Pair<Face, Color> data) {
-
         Face face = data.fst();
-        Color color = data.snd();
-        float dotProduct = face.getN1().toVec3().getUnitVector().dot(pd.getLightPos().getUnitVector());
+        Mat4 projTransform = pd.getProjTransform();
 
-        return new Pair<>(face, color.deriveColor(0, 1, dotProduct, 1));
+        Face projectedFace = new Face(
+                projTransform.multiply(face.getV1()),
+                projTransform.multiply(face.getV2()),
+                projTransform.multiply(face.getV3()),
+                face
+        );
 
+        return new Pair<>(projectedFace, data.snd());
     }
 }

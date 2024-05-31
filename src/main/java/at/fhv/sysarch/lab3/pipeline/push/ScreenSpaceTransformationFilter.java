@@ -6,17 +6,11 @@ import at.fhv.sysarch.lab3.pipeline.data.Pair;
 import com.hackoeur.jglm.Mat4;
 import javafx.scene.paint.Color;
 
-public class ScreenSpaceTransformationFilter implements IPushFilter<Pair<Face, Color>, Pair<Face, Color>> {
-    private IPushPipe<Pair<Face, Color>> successor;
+public class ScreenSpaceTransformationFilter extends APushFilter<Pair<Face, Color>, Pair<Face, Color>> {
     private final PipelineData pd;
 
     public ScreenSpaceTransformationFilter(PipelineData pd) {
         this.pd = pd;
-    }
-
-    @Override
-    public void setPipeSuccessor(IPushPipe<Pair<Face, Color>> pipeSuccessor) {
-        this.successor = pipeSuccessor;
     }
 
     @Override
